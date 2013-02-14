@@ -10951,7 +10951,7 @@ tryagain:
                          * character using utf8.  If we start to fold non-UTF
                          * patterns, be sure to update join_exact() */
                         if (LOC && ender < 256) {
-                            if (UNI_IS_INVARIANT(ender)) {
+                            if (NATIVE_IS_INVARIANT(ender)) {
                                 *s = (U8) ender;
                                 foldlen = 1;
                             } else {
