@@ -65,7 +65,7 @@ EOE
     use charnames ":alias" => { mychar1 => "0xE8000",
                                 mychar2 => 983040,  # U+F0000
                                 mychar3 => "U+100000",
-                                myctrl => 0x80,
+                                myctrl => utf8::unicode_to_native(0x80),
                                 mylarge => "U+111000",
                               };
     is ("\N{PILE OF POO}", chr(0x1F4A9), "Verify :alias alone implies :full");
@@ -77,7 +77,7 @@ EOE
     is (charnames::viacode(0x100000), "mychar3", "And that can get the alias back");
     is ("\N{mylarge}", chr(0x111000), "Verify that can define alias beyond Unicode");
     is (charnames::viacode(0x111000), "mylarge", "And that can get the alias back");
-    is (charnames::viacode(0x80), "myctrl", "Verify that can name a nameless control");
+    is (charnames::viacode(utf8::unicode_to_native(0x80)), "myctrl", "Verify that can name a nameless control");
 
 }
 
@@ -93,7 +93,7 @@ if (ord('A') == 65) { # as on ASCII or UTF-8 machines
     $encoded_bet = "\327\221";
     $encoded_deseng = "\360\220\221\215";
 }
-else { # EBCDIC where UTF-EBCDIC may be used (this may be 1047 specific since
+else { # XXX EBCDIC where UTF-EBCDIC may be used (this may be 1047 specific since
        # UTF-EBCDIC is codepage specific)
     $encoded_be = "\270\102\130";
     $encoded_alpha = "\264\130";
