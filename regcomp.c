@@ -2823,6 +2823,10 @@ S_join_exact(pTHX_ RExC_state_t *pRExC_state, regnode *scan, UV *min_subtract, b
                                      length sequence we are looking for is 2 */
 	    {
                 int count = 0;
+#ifdef is_MULTI_CHAR_FOLD_utf8_safe
+#undef is_MULTI_CHAR_FOLD_utf8_safe
+#endif
+#define is_MULTI_CHAR_FOLD_utf8_safe(s, s_end) (0)
                 int len = is_MULTI_CHAR_FOLD_utf8_safe(s, s_end);
                 if (! len) {    /* Not a multi-char fold: get next char */
                     s += UTF8SKIP(s);
@@ -2920,6 +2924,10 @@ S_join_exact(pTHX_ RExC_state_t *pRExC_state, regnode *scan, UV *min_subtract, b
             const U8 s_masked = 's' & S_or_s_mask;
 
 	    while (s < upper) {
+#ifdef is_MULTI_CHAR_FOLD_latin1_safe
+#undef is_MULTI_CHAR_FOLD_latin1_safe
+#endif
+#define is_MULTI_CHAR_FOLD_latin1_safe(s, s_end) (0)
                 int len = is_MULTI_CHAR_FOLD_latin1_safe(s, s_end);
                 if (! len) {    /* Not a multi-char fold. */
                     if (*s == LATIN_SMALL_LETTER_SHARP_S && OP(scan) == EXACTF)
@@ -12078,6 +12086,10 @@ S_regclass(pTHX_ RExC_state_t *pRExC_state, I32 *flagp, U32 depth,
     const char * orig_parse = RExC_parse;
     const I32 orig_size = RExC_size;
     GET_RE_DEBUG_FLAGS_DECL;
+
+#ifdef EBCDIC
+    allow_multi_folds = FALSE; /* XXX */
+#endif
 
     PERL_ARGS_ASSERT_REGCLASS;
 #ifndef DEBUGGING
