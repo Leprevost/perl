@@ -329,6 +329,13 @@ sub new {
         my $str= $txt;
         if ( $str =~ /^[""]/ ) {
             $str= eval $str;
+            if (! ASCII_PLATFORM) { # Convert string to native
+                my $native_str = "";
+                for my $ch ( split //, $str ) {
+                    $native_str .= chr utf8::unicode_to_native(ord $ch);
+                }
+                $str = $native_str;
+            }
         } elsif ($str =~ / - /x ) { # A range:  Replace this element on the
                                     # list with its expansion
             my ($lower, $upper) = $str =~ / 0x (.+?) \s* - \s* 0x (.+) /x;
@@ -1316,7 +1323,8 @@ if ( !caller ) {
 #
 # The subsequent lines give what code points go into the class defined by the
 # macro.  Multiple characters may be specified via a string like "\x0D\x0A",
-# enclosed in quotes.  Otherwise the lines consist of one of:
+# enclosed in quotes.  The characters are considered to be Unicode, and will
+# be translated into native.  Otherwise the lines consist of one of:
 #   1)  a single Unicode code point, prefaced by 0x
 #   2)  a single range of Unicode code points separated by a minus (and
 #       optional space)
