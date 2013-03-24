@@ -1642,7 +1642,7 @@ sub populate_char_info ($) {
 ## This 'require' doesn't necessarily work in miniperl, and even if it does,
 ## the native perl version of it (which is what would operate under miniperl)
 ## is extremely slow, as it does a string eval every call.
-#my $has_fast_scalar_util = $ !~ /miniperl/
+#my $has_fast_scalar_util = $^X !~ /miniperl/
 #                            && defined eval "require Scalar::Util";
 #
 #sub objaddr($) {
