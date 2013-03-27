@@ -9,6 +9,7 @@ BEGIN {
     @INC = '../lib';
     require Config; import Config;
     require './test.pl';
+    skip_all(" XXX temporary");
 }
 
 use feature 'unicode_strings';
