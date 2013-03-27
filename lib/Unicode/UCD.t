@@ -442,6 +442,11 @@ ok(!casespec(utf8::unicode_to_native(0x41)));
 
 $casespec = casespec(utf8::unicode_to_native(0xdf));
 
+use Data::Dumper;
+diag Dumper $casespec;
+diag $sharp_s_code;
+diag $s_code;
+diag $S_code;
 ok($casespec->{code} eq $sharp_s_code &&
    $casespec->{lower} eq $sharp_s_code  &&
    $casespec->{title} eq "$S_code $s_code"  &&
